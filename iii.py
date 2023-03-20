@@ -1,37 +1,25 @@
-#get list of order total prices and return a list
-def list_of_orders_total_prices (message):
-    new_list_price = []
-    print("Exit program with CTRL+Z\neg format 100,33,744,...n: ")
-    get_list_price_String = input(f"The list of orders total prices of the {message} week in AUD ")
-    list_price = get_list_price_String.split(",")
-    for x in list_price:
-        new_list_price.append(float(x))
-    return new_list_price
-    
 
-class Sale:
+get_listOfSalesCurrentWeek = input("The list of orders total prices of the current week in AUD: ")
+get_listOfSalesPreviouseWeek = input("The list of orders total prices of the previous week in AUD: ")
 
-    total_sales_price_curr_week = list_of_orders_total_prices ("current")
-    total_sales_price_pre_week = list_of_orders_total_prices ("previous")
-    tota_number_of_person_visited_curr = int(input("Total number of persons visited in the Current Week: "))
-    tota_number_of_person_visited_pre = int(input("Total number of persons visited in the Last Week: "))
+getTotalNumberOfPersonVisitedCurrentWeek = int(input("Total number of persons visited in the Current Week: "))
+getTotalNumberOfPersonVisitedPreviouseWeek = int(input("Total number of persons visited in the Previouse Week: "))
 
-    def __init__(self):
-        return
-    
-    def get_total_sale(self,total_sales):
-        a = 0
-        for y in total_sales:
-            a+= y
-        return a
-    
-    def current_Week_per_person_average_sale(self):
-        print(f"Current Week per person average sale= {self.get_total_sale(self.total_sales_price_curr_week)/self.tota_number_of_person_visited_curr}")
-    
-    def previous_Week_per_person_average_sale(self):
-        print(f"Last Week per person average sale= {self.get_total_sale(self.total_sales_price_pre_week)/self.tota_number_of_person_visited_pre}")
+listOfSalesCurrentWeek = get_listOfSalesCurrentWeek.split(",")
+listOfSalesPreviouWeek = get_listOfSalesCurrentWeek.split(",")
 
-sale1 = Sale()
-sale1.current_Week_per_person_average_sale()
-sale1.previous_Week_per_person_average_sale()
-# print(sale1.get_total_sale(sale1.total_sales_price_pre_week))
+total_get_listOfSalesCurrentWeek = 0
+total_get_listOfSalesPreviouseWeek = 0
+
+for current_sales in listOfSalesCurrentWeek:
+    total_get_listOfSalesCurrentWeek += float(current_sales)
+
+for previous_sales in listOfSalesPreviouWeek:
+    total_get_listOfSalesPreviouseWeek += float(previous_sales)
+
+current_week_per_person_average_sale = total_get_listOfSalesCurrentWeek/getTotalNumberOfPersonVisitedCurrentWeek
+previous_week_per_person_average_sale = total_get_listOfSalesPreviouseWeek/getTotalNumberOfPersonVisitedPreviouseWeek
+
+
+print(f"Current Week per person average sale= {current_week_per_person_average_sale}")
+print(f"Current Week per person average sale= {previous_week_per_person_average_sale}")
