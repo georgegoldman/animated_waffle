@@ -118,7 +118,8 @@ def signIn(numbe_of_trial):
         print("Please you have not Signed up with this username, Please Sign up first.")
         start()
 
-"""This function helps to reset password"""
+"""This function helps to reset password
+after 3 trials"""
 def forgetPassword():
     print("Please reset the password by entering the below details:")
     username = input("Please enter your username (Mobile number) to confirm:")
@@ -141,7 +142,8 @@ def forgetPassword():
             print("not successful")
             forgetPassword()
         
-
+"""this display options after
+login and option to reset your password"""
 def signInOption():
     loginOption = int(input("Please enter 1 for resetting the Password.\nPlease enter 2 for signout."))
 
@@ -150,6 +152,8 @@ def signInOption():
     elif loginOption == 2:
         start()
 
+"""this give user the privillege
+to change their password to a new one"""
 def resetPassword():
     username_phone = input("Please enter your Username (Mobile Number):")
     password = input("Please enter your password: ")
