@@ -101,5 +101,31 @@ def no_address_alert():
     else:
         print("please enter a valid option")
 
-def calculator():
-    
+def calculator(mode):
+    if (mode == "dine in"):
+        print("dine in mode")
+    elif (mode == "click and collect"):
+        print("click and collect")
+    elif (mode == "delivery"):
+        print("delivery mode")
+    else:
+        print("please select a valid option")
+
+def order_operation(mode):
+    if mode.lower() == "dine":
+        date_of_booking = input("Please enter the Date of booking for dine in:12/11/2022\n")
+        time_of_booking = input("Please enter the Time of Booking for the Dine in 16:00\n")
+        persons = input("Please enter the number of persons:5\n")
+        print("Thank you for entering the details, Your Booking is confirmed.")
+    elif (mode.lower() == "pick up"):
+        date_of_pickup = input("Please enter the Date of Pick up:12/11/2022\n")
+        time_of_pickup = input("Please enter the time of Pick up 17:00\n")
+        persons = input("Please enter the number of Persons:XXXXX\n")
+        print ("Thank you for entering the details, Your Booking is confirmed.")
+    elif (mode.lower() == "delivery"):
+        date_of_pickup = input("Please enter the Date of Delivery:12/11/2022\n")
+        time_of_pickup = input("Please enter the time of Delivery 18:00\n")
+        distance = input("Please enter the Distance from the restaurant:XXXXX\n")
+        print ("Thank you for your Order, Your Order has been confirmed.")
+    else:
+        print("please enter a valid option")
