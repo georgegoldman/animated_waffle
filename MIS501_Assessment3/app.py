@@ -116,16 +116,44 @@ def order_operation(mode):
         date_of_booking = input("Please enter the Date of booking for dine in:12/11/2022\n")
         time_of_booking = input("Please enter the Time of Booking for the Dine in 16:00\n")
         persons = input("Please enter the number of persons:5\n")
-        print("Thank you for entering the details, Your Booking is confirmed.")
     elif (mode.lower() == "pick up"):
         date_of_pickup = input("Please enter the Date of Pick up:12/11/2022\n")
         time_of_pickup = input("Please enter the time of Pick up 17:00\n")
         persons = input("Please enter the number of Persons:XXXXX\n")
-        print ("Thank you for entering the details, Your Booking is confirmed.")
     elif (mode.lower() == "delivery"):
         date_of_pickup = input("Please enter the Date of Delivery:12/11/2022\n")
         time_of_pickup = input("Please enter the time of Delivery 18:00\n")
-        distance = input("Please enter the Distance from the restaurant:XXXXX\n")
-        print ("Thank you for your Order, Your Order has been confirmed.")
+        distance = input("Please enter the Distance from the restaurant:8\n")
+        if int(distance) > 10:
+            print("More than the applicable limits, Please you have to pickup order")
     else:
         print("please enter a valid option")
+    end_msg = """Thank you for your Order, Your Order has been confirmed.
+ Your order id is S001
+ Main Menu..."""
+    print (end_msg)
+
+def stat():
+    stat_options = """Please Enter the Option to Print the Statitics.
+ 1 - All Dine in Orders.
+ 2 - All Pick up Orders.
+ 3 - All Deliveries.
+ 4 - All Orders (Asccending Order).
+ 5 - Total Amount Spent on All Orders.
+ 6 - To go to Previous Menu.
+ """
+    stat_options_val = input(stat_options)
+    if (stat_options_val in ["1", "2", "3", "4", "5", "6"] ):
+        if (stat_options_val == "6"):
+            print("loading previous menu...")
+        elif (stat_options_val == "5"):
+            print("""Option 5: Total Amount Spent(All Type of Orders i.e.,
+ Dine in, Deliveries and Pickups)
+ Total amount spent on all orders AUD: 56.0""")
+        elif (stat_options_val in ["1", "2", "3", "4"]):
+            print(f"""Option 1: All {stat_options_val} in orders Output:
+    Order ID    Date    Total Amount Paid   Type of Order""")
+    else:
+        print("you entered the wrong option")
+
+stat()
