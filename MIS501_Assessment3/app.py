@@ -1,18 +1,4 @@
-def sign_up():
-    name = input("Please enter you name:XXX ")
-    address = input("Please enter your address or press enter to skip. ")
-    mobile = input("Please enter your mobile number.0111111111 ")
-    password = input("Please your Password:x@11 ")
-    confirm_password = input("Please enter you password:x@11 ")
-    dob = input("please enter your Date of Birth #DD/MM/YYYY (No space)11/11/1988 ")
-    print("You have Successfully Signed up")
 
-
-def sign_in():
-    name = input("Please enter your Username (Mobile Number):01111111111 ")
-    print("")
-    pasword = input("Please enter your password:x@11 ")
-    print("you have successfully signed in")
 
 #this function handles the dashboard
 def dashboard():
@@ -156,4 +142,55 @@ def stat():
     else:
         print("you entered the wrong option")
 
-stat()
+
+class Restaurant:
+    users = []
+
+    
+    def __init__(self) -> None:
+        pass
+
+    """home screen"""
+    def landing_page(self):
+        landing_page_options = """ Please Enter 1 for Sign up.
+ Please Enter 2 for Sign in.
+ Please Enter 3 for Quite
+ """
+        landing_page_options_val = input(landing_page_options)
+        if (landing_page_options_val not in ["1", "2", "3"]):
+            print("please select 1, 2, 3")
+            self.landing_page()
+        else:
+            if (landing_page_options_val  == "1"):
+                self.sign_up()
+            elif (landing_page_options_val == "2"):
+                self.sign_in()
+            elif (landing_page_options_val == "3"):
+                exit()
+
+    """the sign up page"""
+    def sign_up(self):
+        name = input("Please enter you name:XXX ")
+        address = input("Please enter your address or press enter to skip. ")
+        mobile = input("Please enter your mobile number.0111111111 ")
+        password = input("Please your Password:x@11 ")
+        confirm_password = input("Please enter you password:x@11 ")
+        dob = input("please enter your Date of Birth #DD/MM/YYYY (No space)11/11/1988 ")
+
+        for i in mobile:
+            if isinstance(i, int):
+                mobile_digit_to_string = str(i)
+            else:
+                print("this is not a string")
+
+                
+
+        print("You have Successfully Signed up")
+
+    def sign_in(self):
+        name = input("Please enter your Username (Mobile Number):01111111111 \n")
+        pasword = input("Please enter your password:x@11 \n")
+        print("you have successfully signed in")
+    
+x = Restaurant()
+x.landing_page()
