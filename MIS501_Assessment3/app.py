@@ -1,18 +1,7 @@
 
 
 #this function handles the dashboard
-def dashboard():
-    option = input("Please Enter 2.1 to start Ordering.\nPlease Enter 2.2 to Print Statistics.\nPlease enter 2.3 for Logout.\n")
-    log_out = print("")
-   
-    if option == "2.1":
-        ordering(option)
-    elif option == "2.2":
-        print("Printing Statistics...")
-    elif option == "2.3":
-        print("Loging out...")
-    else:
-        print("Please select a valid option");
+
 
 
 def ordering(option):
@@ -177,20 +166,83 @@ class Restaurant:
         confirm_password = input("Please enter you password:x@11 ")
         dob = input("please enter your Date of Birth #DD/MM/YYYY (No space)11/11/1988 ")
 
-        for i in mobile:
-            if isinstance(i, int):
-                mobile_digit_to_string = str(i)
+        """check if the mobile number are digits"""
+        if mobile.isnumeric():
+            """check if the password conform to the pattern"""
+            if ("@" in password and password[-1].isnumeric()):
+                """check if pass match confirmed password"""
+                if (password == confirm_password):
+                    """split DOB to check format criteria"""
+                    get_date_of_birth = dob.split("/")
+                    if (get_date_of_birth[0].isnumeric() and get_date_of_birth[1].isnumeric() and get_date_of_birth[2].isnumeric()):
+                        if (int(get_date_of_birth[0]) >31):
+                            print("Please enter a valid day of birth")
+                        elif (int(get_date_of_birth[1])>12):
+                            print("please enter a valid month of birth")
+                        else:
+                            newUser = {
+                                "name": name,
+                                "address": address,
+                                "mobile": mobile,
+                                "password": password,
+                                "dob": dob
+                            }
+                            self.users.append(newUser)
+                    else:
+                        print("Invalid date of birth format")
+                        self.sign_up()
+                else:
+                    print("here please password does not match")
+                    self.sign_up()
             else:
-                print("this is not a string")
-
+                print("Please enter a valid password format")
+                self.sign_up()
+        else:
+            print("invalid phone number")
+            self.sign_up()
                 
 
         print("You have Successfully Signed up")
+        self.landing_page()
 
     def sign_in(self):
-        name = input("Please enter your Username (Mobile Number):01111111111 \n")
+        username = input("Please enter your Username (Mobile Number):01111111111 \n")
         pasword = input("Please enter your password:x@11 \n")
-        print("you have successfully signed in")
+        
+        """check if the user exist in the list of registered uers"""
+        for x in self.users:
+            
+            """check look up the username which is mobile"""
+            if x["mobile"] == username:
+                """if user validate password"""
+                if (x["password"] == pasword):
+                    print("you have successfully signed in")
+                    self.dashboard()
+
+                else:
+                    """if password does not match display error and 
+                    redirect user to login"""
+                    print("Please enter a valid password")
+                    self.sign_in()
+            else:
+                """if does not exist through warning request to login"""
+                print("User does not exist")
+                self.sign_in()
+        
+    
+    def dashboard(self):
+        option = input("Please Enter 2.1 to start Ordering.\nPlease Enter 2.2 to Print Statistics.\nPlease enter 2.3 for Logout.\n")
+        log_out = print("")
+    
+        if option == "2.1":
+            ordering(option)
+        elif option == "2.2":
+            print("Printing Statistics...")
+        elif option == "2.3":
+            print("Loging out...")
+            self.landing_page()
+        else:
+            print("Please select a valid option");
     
 x = Restaurant()
 x.landing_page()
