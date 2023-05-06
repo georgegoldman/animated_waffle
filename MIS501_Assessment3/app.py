@@ -1,52 +1,6 @@
 
 
 #this function handles the dashboard
-
-
-
-
-
-
-
-
-def menu(order_online_value):
-    print(order_online_value)
-    menu_option = """ Enter 1 for Noodles Price AUD 2
- Enter 2 for Sandwich Price AUD 4
- Enter 3 for Dumpling Price  AUD 6
- Enter 4 for Muffins Price AUD 8
- Enter 5 for Pasta Price AUD 10
- Enter 6 for Pizza Price AUD 20
- Enter 7 for Drinks Menu:
- """
-    menu_option_value = input(menu_option)
-    if (menu_option_value == "7"):
-        print("loading option 7")
-    elif (menu_option in ["1","2","3","4","5","6"]):
-        print("order options...")
-    else:
-        print("please select a valid option")
-
-def drink_menu(menu_option_value):
-    print(menu_option_value)
-    dink_option = """Enter 1 for Coffee Price AUD 2
- Enter 2 for Colddrink Price AUD 4
- Enter 3 for Shake Price AUD 6
- Enter 4 fro Checkout:
- """
-    drink_option_value = input(dink_option)
-    if (drink_option_value in ["1", "2", "3"]):
-        print("you selected a drink")
-    elif drink_option_value == "4":
-        check_out = """Please Enter Y to proceed to Checkout or
- Enter N to cancel the order """
-        check_out_value = input(check_out)
-        if check_out_value.lower() == "y":
-            print("Proceeding to checkout")
-        elif check_out_value.lower() == "n":
-            print("cancling check out")
-        else:
-            print("please select a valid option")
     
 def no_address_alert():
     msg = """You have not mentioned your address, while signing up.
@@ -119,6 +73,52 @@ def stat():
 
 class Restaurant:
     users = []
+    logged_in_user = ""
+
+    cart = []
+
+    food_item = {
+        "1": {
+            "name": "Noodles",
+            "price": 2
+        },
+        "2": {
+            "name": "Sandwich",
+            "price": 4
+        },
+        "3": {
+            "name": "Dumpling",
+            "price": 6
+        },
+        "4": {
+            "name": "Muffins",
+            "price": 8
+        },
+        "5": {
+            "name": "Pasta",
+            "price": 10
+        },
+        "6": {
+            "name": "Pizza",
+            "price": 12
+        }
+    }
+
+    drink_item = {
+        "1": {
+            "name": "Coffee",
+            "price": 2
+        },
+        "2": {
+            "name": "Colddrink",
+            "price": 4
+        },
+        "3": {
+            "name": "Shake",
+            "price": 6
+        }
+    }
+    
 
     
     def __init__(self) -> None:
@@ -181,7 +181,7 @@ class Restaurant:
                                         "address": address,
                                         "mobile": mobile,
                                         "password": password,
-                                        "dob": dob
+                                        "dob": dob,
                                         }
                                         self.users.append(newUser)
                                         self.landing_page()
@@ -221,7 +221,8 @@ class Restaurant:
             if x["mobile"] == username:
                 """if user validate password"""
                 if (x["password"] == pasword):
-                    print("you have successfully signed in")
+                    self.logged_in_user = username
+                    print(f"you have successfully signed in {self.logged_in_user}")
                     self.dashboard()
 
                 else:
@@ -242,7 +243,7 @@ class Restaurant:
         log_out = print("")
     
         if option == "2.1":
-            self.ordering(option)
+            self.ordering()
         elif option == "2.2":
             print("Printing Statistics...")
         elif option == "2.3":
@@ -251,8 +252,8 @@ class Restaurant:
         else:
             print("Please select a valid option");
 
-    def ordering(self, option):
-        order_option = input(f"{option}\n Please Enter 1 for Dine in.\n Please Enter 2 for Order Online.\n Please Enter 3 to go to Login page\n")
+    def ordering(self):
+        order_option = input(f"\n Please Enter 1 for Dine in.\n Please Enter 2 for Order Online.\n Please Enter 3 to go to Login page\n")
 
         if order_option == "2":
             #move the user to order online
@@ -263,21 +264,70 @@ class Restaurant:
             self.dashboard()
         else:
             print("Please enter a valid option")
-            self.ordering(option)
+            self.ordering()
 
     def order_online(self):
         order_option = """ Enter 1 for Self Pickup. 
  Enter 2 for Home Delivery.
  Enter 3 to go to previous Menu."""
         order_option_value = input(order_option)
-        if (order_option_value == "1" or order_option_value == 2):
-            menu(order_option_value)
+        if (order_option_value == "1" or order_option_value == "2"):            
+            self.menu(order_option_value)
         elif(order_option_value == 3):
-            # ordering(None)p
-            pass
+            self.ordering()
+
         else:
             print("Please a valid option")
             self.order_online()
+
+    def menu(self, order_type):
+        menu_option = """ Enter 1 for Noodles Price AUD 2
+ Enter 2 for Sandwich Price AUD 4
+ Enter 3 for Dumpling Price  AUD 6
+ Enter 4 for Muffins Price AUD 8
+ Enter 5 for Pasta Price AUD 10
+ Enter 6 for Pizza Price AUD 20
+ Enter 7 for Drinks Menu:
+ """
+        
+        menu_option_value = input(menu_option)
+        if (menu_option_value == "7"):
+            self.drink_menu(order_type)
+        elif (menu_option_value in ["1","2","3","4","5","6"]):
+            new_item = self.food_item[f"{menu_option_value}"]
+            self.cart.append(new_item)
+            print(self.cart)
+            self.menu(order_type)
+        else:
+            print("please select a valid option")
+            self.menu(order_type)
+        
+    def drink_menu(self, order_type):
+        dink_option = """Enter 1 for Coffee Price AUD 2
+ Enter 2 for Colddrink Price AUD 4
+ Enter 3 for Shake Price AUD 6
+ Enter 4 fro Checkout:
+    """
+        drink_option_value = input(dink_option)
+        if (drink_option_value in ["1", "2", "3"]):
+            new_item = self.food_item[f"{drink_option_value}"]
+            self.cart.append(new_item)
+            print(self.cart)
+            self.drink_menu(order_type)
+        elif drink_option_value == "4":
+            """check for order typer if pick up or deliery"""
+            if (order_type == "2"):
+                pass
+            else: 
+                check_out = """Please Enter Y to proceed to Checkout or
+ Enter N to cancel the order """
+                check_out_value = input(check_out)
+                if check_out_value.lower() == "y":
+                    print("Proceeding to checkout")
+                elif check_out_value.lower() == "n":
+                    print("cancling check out")
+                else:
+                    print("please select a valid option")
     
 x = Restaurant()
 x.landing_page()
