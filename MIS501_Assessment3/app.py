@@ -4,25 +4,10 @@
 
 
 
-def ordering(option):
-    order_option = input(f"{option}\n Please Enter 1 for Dine in.\n Please Enter 2 for Order Online.\n Please Enter 3 to go to Login page\n")
-
-    if order_option == "2":
-        order_online()
 
 
-def order_online():
-    order_option = """ Enter 1 for Self Pickup. 
- Enter 2 for Home Delivery.
- Enter 3 to go to previous Menu."""
-    order_option_value = input(order_option)
-    if (order_option_value == "1" or order_option_value == 2):
-        menu(order_option_value)
-    elif(order_option_value == 3):
-        ordering(None)
-    else:
-        print("Please a valid option")
-        order_online()
+
+
 
 def menu(order_online_value):
     print(order_online_value)
@@ -175,22 +160,45 @@ class Restaurant:
                     """split DOB to check format criteria"""
                     get_date_of_birth = dob.split("/")
                     if (get_date_of_birth[0].isnumeric() and get_date_of_birth[1].isnumeric() and get_date_of_birth[2].isnumeric()):
+                        
                         if (int(get_date_of_birth[0]) >31):
                             print("Please enter a valid day of birth")
+                            self.sign_up()
                         elif (int(get_date_of_birth[1])>12):
                             print("please enter a valid month of birth")
+                            self.sign_up()
                         else:
-                            newUser = {
-                                "name": name,
-                                "address": address,
-                                "mobile": mobile,
-                                "password": password,
-                                "dob": dob
-                            }
-                            self.users.append(newUser)
+                            
+                            """check if user already exist"""
+                            if self.users :
+                                for user in self.users:
+                                    if (user["mobile"] == mobile):
+                                        print("user already exit")
+                                        self.landing_page()
+                                    else:
+                                        newUser = {
+                                        "name": name,
+                                        "address": address,
+                                        "mobile": mobile,
+                                        "password": password,
+                                        "dob": dob
+                                        }
+                                        self.users.append(newUser)
+                                        self.landing_page()
+                    
+                            else:
+                                newUser = {
+                                        "name": name,
+                                        "address": address,
+                                        "mobile": mobile,
+                                        "password": password,
+                                        "dob": dob
+                                    }
+                                self.users.append(newUser)
+                                self.landing_page()
                     else:
-                        print("Invalid date of birth format")
-                        self.sign_up()
+                        print("Invalid date of birth format ok")
+                        self.landing_page()
                 else:
                     print("here please password does not match")
                     self.sign_up()
@@ -201,9 +209,6 @@ class Restaurant:
             print("invalid phone number")
             self.sign_up()
                 
-
-        print("You have Successfully Signed up")
-        self.landing_page()
 
     def sign_in(self):
         username = input("Please enter your Username (Mobile Number):01111111111 \n")
@@ -226,8 +231,10 @@ class Restaurant:
                     self.sign_in()
             else:
                 """if does not exist through warning request to login"""
-                print("User does not exist")
-                self.sign_in()
+                print("User does not exist please sign up")
+                self.sign_up()
+        print("User does not exist please sign up")
+        self.landing_page()
         
     
     def dashboard(self):
@@ -235,7 +242,7 @@ class Restaurant:
         log_out = print("")
     
         if option == "2.1":
-            ordering(option)
+            self.ordering(option)
         elif option == "2.2":
             print("Printing Statistics...")
         elif option == "2.3":
@@ -243,6 +250,34 @@ class Restaurant:
             self.landing_page()
         else:
             print("Please select a valid option");
+
+    def ordering(self, option):
+        order_option = input(f"{option}\n Please Enter 1 for Dine in.\n Please Enter 2 for Order Online.\n Please Enter 3 to go to Login page\n")
+
+        if order_option == "2":
+            #move the user to order online
+            self.order_online()
+        elif (order_option == "1"):
+            pass
+        elif (order_option == "3"):
+            self.dashboard()
+        else:
+            print("Please enter a valid option")
+            self.ordering(option)
+
+    def order_online(self):
+        order_option = """ Enter 1 for Self Pickup. 
+ Enter 2 for Home Delivery.
+ Enter 3 to go to previous Menu."""
+        order_option_value = input(order_option)
+        if (order_option_value == "1" or order_option_value == 2):
+            menu(order_option_value)
+        elif(order_option_value == 3):
+            # ordering(None)p
+            pass
+        else:
+            print("Please a valid option")
+            self.order_online()
     
 x = Restaurant()
 x.landing_page()
