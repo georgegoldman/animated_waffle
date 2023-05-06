@@ -1,19 +1,6 @@
-
-
 #this function handles the dashboard
     
-def no_address_alert():
-    msg = """You have not mentioned your address, while signing up.
- Please Enter Y if you would like to enter your address.
- Enter N if you would like to select mode of order
- """
-    msg_option = input(msg)
-    if (msg_option.lower() == "y"):
-        print("you selected y")
-    elif (msg_option.lower() == "n"):
-        print("you selected n")
-    else:
-        print("please enter a valid option")
+
 
 def calculator(mode):
     if (mode == "dine in"):
@@ -121,7 +108,7 @@ class Restaurant:
     
 
     
-    def __init__(self) -> None:
+    def _init_(self) -> None:
         pass
 
     """home screen"""
@@ -317,7 +304,13 @@ class Restaurant:
         elif drink_option_value == "4":
             """check for order typer if pick up or deliery"""
             if (order_type == "2"):
-                pass
+                for user in self.users:
+                    if(user["mobile"] == self.logged_in_user):
+                        if (user["address"] == ""):
+                            self.no_address_alert()
+                    else:
+                        print("smart anon")
+                        self.landing_page()
             else: 
                 check_out = """Please Enter Y to proceed to Checkout or
  Enter N to cancel the order """
@@ -328,6 +321,31 @@ class Restaurant:
                     print("cancling check out")
                 else:
                     print("please select a valid option")
-    
+
+    def no_address_alert(self):
+        msg = """You have not mentioned your address, while signing up.
+ Please Enter Y if you would like to enter your address.
+ Enter N if you would like to select mode of order
+    """
+        msg_option = input(msg)
+        if (msg_option.lower() == "y"):
+            address_value = input("Please Enter an address ")
+            if (address_value == "" and address_value.isspace()):
+                print("Please enter a valid option")
+                self.no_address_alert()
+            else:
+                for user in self.users:
+                    if (user["mobile"] == self.logged_in_user):
+                        user["address"] = address_value
+                        get_position = self.users.index(user)
+                        self.users[get_position] = user
+                    else:
+                        print("Please Sign in or Sign up")
+                        self.landing_page()
+        elif (msg_option.lower() == "n"):
+            self.ordering()
+        else:
+            print("please enter a valid option")
+
 x = Restaurant()
 x.landing_page()
