@@ -222,6 +222,7 @@ class Restaurant(Calculator):
                 print(f"""Option 5: Total Amount Spent(All Type of Orders i.e.,
     Dine in, Deliveries and Pickups)
     Total amount spent on all orders AUD: {total_value}""")
+                self.stat()
             elif (stat_options_val in ["1", "2", "3", "4"]):
                 order_type = {
                     "1": "Dine in",
@@ -238,17 +239,48 @@ class Restaurant(Calculator):
                         price = order["price"]
                         date = order["date"]
                         print(f"""{id}        {date}     {price}   Dine in""")
-                if (stat_options_val == "2"):
+                    self.stat()
+
+                elif (stat_options_val == "2"):
                     print(f"""Option 1: All {stat_options_val} in orders Output:
  Order ID    Date    Total Amount Paid   Type of Order""")
                     for order in self.all_pick_up_order:
                         id = order["price"]
                         price = order["price"]
                         date = order["date"]
-                        print(f"""{id}        {date}     {price}   """)
+                        print(f"""{id}        {date}     {price}   Picked up""")
+                    self.stat()
+
+                elif (stat_options_val == "3"):
+                    print(f"""Option 1: All {stat_options_val} in orders Output:
+ Order ID    Date    Total Amount Paid   Type of Order""")
+                    for order in self.all_delivery_order:
+                        id = order["price"]
+                        price = order["price"]
+                        date = order["date"]
+                        print(f"""{id}        {date}     {price}   Delivery""")
+                    self.stat()
+
+                elif (stat_options_val == "4"):
+                    print(f"""Option 1: All {stat_options_val} in orders Output:
+ Order ID    Date    Total Amount Paid   Type of Order""")
+                    all_order = self.all_delivery_order + self.all_dine_in_order + self.all_pick_up_order
+                    def get_id(one_order):
+                        return one_order.get('id')
+                    all_order.sort(key=get_id)
+                    for order in all_order:
+                        id = order["price"]
+                        price = order["price"]
+                        date = order["date"]
+                        print(f"""{id}        {date}     {price}   Dine in""")
+                    self.stat()
+                else:
+                    print("please enter a valid option")
+                    self.stat()
                         
         else:
             print("you entered the wrong option")
+            self.stat()
 
     def ordering(self):
         order_option = input(f"\n Please Enter 1 for Dine in.\n Please Enter 2 for Order Online.\n Please Enter 3 to go to Login page\n")
@@ -269,16 +301,17 @@ class Restaurant(Calculator):
     def order_online(self):
         order_option = """ Enter 1 for Self Pickup. 
  Enter 2 for Home Delivery.
- Enter 3 to go to previous Menu."""
+ Enter 3 to go to previous Menu.
+ """
         order_option_value = input(order_option)
         if (order_option_value == "1"):
             #set order mode
             self.order_mode =  "click and collect"           
             self.menu(order_option_value)
         elif (order_option_value == "2"):
-            self.order_mode =  "delivery mode"           
+            self.order_mode =  "delivery"           
             self.menu(order_option_value)
-        elif(order_option_value == 3):
+        elif(order_option_value == "3"):
             self.ordering()
 
         else:
@@ -301,7 +334,6 @@ class Restaurant(Calculator):
         elif (menu_option_value in ["1","2","3","4","5","6"]):
             new_item = self.food_item[f"{menu_option_value}"]
             self.cart.append(new_item)
-            print(self.cart)
             self.menu(order_type)
         else:
             print("please select a valid option")
@@ -311,52 +343,67 @@ class Restaurant(Calculator):
         dink_option = """Enter 1 for Coffee Price AUD 2
  Enter 2 for Colddrink Price AUD 4
  Enter 3 for Shake Price AUD 6
- Enter 4 fro Checkout:
+ Enter 4 for Checkout:
     """
         drink_option_value = input(dink_option)
         if (drink_option_value in ["1", "2", "3"]):
             new_item = self.food_item[f"{drink_option_value}"]
             self.cart.append(new_item)
-            print(self.cart)
             self.drink_menu(order_type)
         elif drink_option_value == "4":
             """check for order typer if pick up or delivery"""
             check_out = """Please Enter Y to proceed to Checkout or
  Enter N to cancel the order """
             check_out_value = input(check_out)
+            getUser = {}
             if (order_type == "2"):
                 for user in self.users:
                     if(user["mobile"] == self.logged_in_user):
-                        if (user["address"] == ""):
-                            self.no_address_alert()
-                            self.drink_menu(order_type)
-                    else:
-                        print("smart anon")
-                        self.landing_page()
+                        getUser = user
+                        break
+                if(getUser["address"] == ""):
+                    self.no_address_alert()
+                    self.drink_menu(order_type)
+                else:
+                    print("stock here")
+                    print(getUser["address"])
+                    
+                    self.drink_menu(order_type="1")
+            elif (order_type == "1"):
                  
-            if check_out_value.lower() == "y":
-                """get list of options the person has bought
-                and calculate values"""
-                if (self.order_mode == "dine in"):
-                    cart_bill = self.total_price_in_cart(self.cart)
-                    charges = cart_bill * (15/100)
-                    plus_charges = cart_bill + charges
-                    print(f"Your total payble amount is: {plus_charges} inclusing AUD {charges} for Service Charges")
-                    self.order_operation(self.order_mode, plus_charges)
-                elif (self.order_mode == "click and collect"):
-                    print(f"Your total payble is: {self.total_price_in_cart(self.cart)}")
-                    self.order_operation(self.order_mode, self.total_price_in_cart(self.cart))
-                elif (self.order_mode == "delivery"):
-                    bill = self.total_price_in_cart(self.cart)
-                    print(f"Your total payble is: {bill} and there will be an additional charges for delivery.")
-                    self.order_operation(self.order_mode, bill)
+                if check_out_value.lower() == "y":
+                    """get list of options the person has bought
+                    and calculate values"""
+                    if (self.order_mode == "dine in"):
+                        cart_bill = self.total_price_in_cart(self.cart)
+                        charges = cart_bill * (15/100)
+                        plus_charges = cart_bill + charges
+                        print(f"Your total payble amount is: {plus_charges} inclusing AUD {charges} for Service Charges")
+                        self.order_operation(self.order_mode, plus_charges)
+                    elif (self.order_mode == "click and collect"):
+                        print(f"Your total payble is: {self.total_price_in_cart(self.cart)}")
+                        self.order_operation(self.order_mode, self.total_price_in_cart(self.cart))
+                    elif (self.order_mode == "delivery"):
+                        bill = self.total_price_in_cart(self.cart)
+                        print(f"Your total payble is: {bill} and there will be an additional charges for delivery.")
+                        self.order_operation(self.order_mode, bill)
+                    else:
+                        print("error")
+                        self.drink_menu(order_type)
+                elif check_out_value.lower() == "n":
+                    self.dashboard()
+                    self.drink_menu()
                 else:
                     print("please select a valid option")
-            elif check_out_value.lower() == "n":
-                print("cancling check out")
+                    self.drink_menu(order_type)
+            elif (order_type == "3"):
+                self.ordering()
             else:
-                print("please select a valid option")
-
+                print("Please Enter a valid input")
+                self.drink_menu(order_type)
+        else:
+            print("Please enter a valid option")
+            self.drink_menu(order_type)
 
     def no_address_alert(self):
         msg = """You have not mentioned your address, while signing up.
@@ -382,6 +429,7 @@ class Restaurant(Calculator):
             self.ordering()
         else:
             print("please enter a valid option")
+            self.no_address_alert()
     
     def order_operation(self, mode, plus_service):
         if mode.lower() == "dine in":
@@ -415,7 +463,7 @@ class Restaurant(Calculator):
         elif (mode.lower() == "click and collect"):
             date_of_pickup = input("Please enter the Date of Pick up:12/11/2022\n")
             time_of_pickup = input("Please enter the time of Pick up 17:00\n")
-            persons = input("Please enter the number of Persons:XXXXX\n")
+            persons = input("Please enter the number of Persons:10\n")
             if (persons.isnumeric() and date_of_pickup.count("/") == 2 and (":" in time_of_pickup)):
                 date_to_list = date_of_pickup.split("/")
                 for i in date_to_list:
@@ -463,7 +511,7 @@ class Restaurant(Calculator):
                         plus_service += 18
                     else:
                         pass
-                    id = "S{:03d}".format(self.id_count)
+                    id = "S"+"{:03d}".format(self.id_count)
                     self.id_count += 1
                     new_delivery_order = {
                         "id": id,
