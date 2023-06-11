@@ -235,7 +235,7 @@ class Restaurant(Calculator):
                     print(f"""Option 1: All {stat_options_val} in orders Output:
  Order ID    Date    Total Amount Paid   Type of Order""")
                     for order in self.all_dine_in_order:
-                        id = order["price"]
+                        id = order["id"]
                         price = order["price"]
                         date = order["date"]
                         print(f"""{id}        {date}     {price}   Dine in""")
@@ -245,7 +245,7 @@ class Restaurant(Calculator):
                     print(f"""Option 1: All {stat_options_val} in orders Output:
  Order ID    Date    Total Amount Paid   Type of Order""")
                     for order in self.all_pick_up_order:
-                        id = order["price"]
+                        id = order["id"]
                         price = order["price"]
                         date = order["date"]
                         print(f"""{id}        {date}     {price}   Picked up""")
@@ -255,7 +255,7 @@ class Restaurant(Calculator):
                     print(f"""Option 1: All {stat_options_val} in orders Output:
  Order ID    Date    Total Amount Paid   Type of Order""")
                     for order in self.all_delivery_order:
-                        id = order["price"]
+                        id = order["id"]
                         price = order["price"]
                         date = order["date"]
                         print(f"""{id}        {date}     {price}   Delivery""")
@@ -269,7 +269,7 @@ class Restaurant(Calculator):
                         return one_order.get('id')
                     all_order.sort(key=get_id)
                     for order in all_order:
-                        id = order["price"]
+                        id = order["id"]
                         price = order["price"]
                         date = order["date"]
                         print(f"""{id}        {date}     {price}   Dine in""")
@@ -391,8 +391,8 @@ class Restaurant(Calculator):
                         print("error")
                         self.drink_menu(order_type)
                 elif check_out_value.lower() == "n":
-                    self.dashboard()
-                    self.drink_menu()
+                    
+                    self.menu(order_type)
                 else:
                     print("please select a valid option")
                     self.drink_menu(order_type)
@@ -405,6 +405,8 @@ class Restaurant(Calculator):
             print("Please enter a valid option")
             self.drink_menu(order_type)
 
+    """this alert the user when there is a error wih
+    delivery due to address"""
     def no_address_alert(self):
         msg = """You have not mentioned your address, while signing up.
  Please Enter Y if you would like to enter your address.
@@ -449,6 +451,7 @@ class Restaurant(Calculator):
                 id = "S{:03d}".format(self.id_count)
                 self.id_count += 1
                 new_dine_order = {
+                    "id": id,
                     "date": date_of_booking,
                     "time": time_of_booking,
                     "price": plus_service * int(persons)
